@@ -13,26 +13,22 @@ def canUnlockAll(boxes):
     Returns:
     bool: True if all boxes can be opened, False otherwise
     """
+    if not boxes:
+        return False
 
     n = len(boxes)
-    visited = [False] * n
+    unlocked = [False] * n
+    unlocked[0] = True
+    keys = set(boxes[0])
 
-    # Mark the first box as visited
-    visited[0] = True
-
-    # Initialize a queue with the keys from the first box
-    queue = boxes[0].copy()
+    queue = [0]
 
     while queue:
-        key = queue.pop(0)
+        current_box = queue.pop(0)
+        for key in boxes[current_box]:
+            if key < n and not unlocked[key]:
+                unlocked[key] = True
+                queue.append(key)
+                keys.update(boxes[key])
 
-        # If the key is valid (between 0 and n-1),
-        # mark the corresponding box as visited
-        if 0 <= key < n and not visited[key]:
-            visited[key] = True
-
-            # Add the keys from the newly visited box to the queue
-            queue.extend(boxes[key])
-
-    # Check if all boxes have been visited
-    return all(visited)
+    return all(unlocked)
