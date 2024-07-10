@@ -18,10 +18,20 @@ def minOperations(n):
         or 0 if n is impossible to achieve.
     """
     if n <= 1:
-        return n
+        return 0
 
-    for i in range(2, int(n ** 0.5) + 1):
-        if n % i == 0:
-            return i + minOperations(n // i)
+    operations = 0
+    factor = 2
 
-    return n
+    while n > 1:
+        while n % factor == 0:
+            operations += factor
+            n //= factor
+        factor += 1
+
+    return operations
+
+# Testing the function
+
+
+print(minOperations(9))  # Output: 6
