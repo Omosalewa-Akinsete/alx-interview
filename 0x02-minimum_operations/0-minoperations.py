@@ -30,8 +30,3 @@ def minOperations(n):
         factor += 1
 
     return operations
-
-# Testing the function
-
-
-print(minOperations(9))  # Output: 6
