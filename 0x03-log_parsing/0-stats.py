@@ -18,9 +18,7 @@ status_codes = {
 
 
 def print_status():
-    """
-    Helper function to output status
-    """
+    """Helper function to output status"""
     print(f"File size: {total_size}")
 
     for code, count in status_codes.items():
