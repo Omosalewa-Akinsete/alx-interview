@@ -1,35 +1,50 @@
 #!/usr/bin/python3
 """Reads stdin line by line and computes metrics"""
 import sys
-from collections import defaultdict
+import signal
 
 total_size = 0
-status_count = defaultdict(int)
+status_counts = {
+    '200': 0,
+    '301': 0,
+    '400': 0,
+    '401': 0,
+    '403': 0,
+    '404': 0,
+    '405': 0,
+    '500': 0
+}
 line_count = 0
 
-try:
-    while True:
-        line = sys.stdin.readline().strip()
-        if not line:
-            break
 
-        try:
-            _, _, _, _, status_code_str, file_size_str = line.split()
-            status_code = int(status_code_str)
-            file_size = int(file_size_str)
-        except (ValueError, IndexError):
-            continue
+def print_stats():
+    """Print status"""
+    print("File size: {}".format(total_size))
+    for code in sorted(status_counts.keys()):
+        if status_counts[code] > 0:
+            print("{}: {}".format(code, status_counts[code]))
 
-        total_size += file_size
-        status_count[status_code] += 1
-        line_count += 1
 
-        if line_count % 10 == 0:
-            print(f"Total file size: File size: {total_size}")
-            for status_code in sorted(status_count):
-                print(f"{status_code}: {status_count[status_code]}")
+def signal_handler(sig, frame):
+    """Signal handler"""
+    print_stats()
+    sys.exit(0)
 
-except KeyboardInterrupt:
-    print(f"Total file size: File size: {total_size}")
-    for status_code in sorted(status_count):
-        print(f"{status_code}: {status_count[status_code]}")
+
+signal.signal(signal.SIGINT, signal_handler)
+for line in sys.stdin:
+    line_count += 1
+    parts = line.split()
+    if len(parts) > 6:
+        file_size = parts[-1]
+        status_code = parts[-2]
+        if status_code in status_counts:
+            try:
+                total_size += int(file_size)
+                status_counts[status_code] += 1
+            except ValueError:
+                pass
+    if line_count % 10 == 0:
+        print_stats()
+
+print_stats()
