@@ -3,77 +3,38 @@
 import sys
 
 
-def is_safe(board, row, col, N):
+def n_queens(t_arr, col, i, n):
     """
-    Check if it's safe to place a queen on the given board position.
-
-    Args:
-        board (list): The current state of the board.
-        row (int): The row index of the position to check.
-        col (int): The column index of the position to check.
-        N (int): The size of the board (N x N).
-
-    Returns:
-        bool: True if it's safe to place a queen, False otherwise.
+       Find all possible solutions for N-queen problem
+       and return them in a list
     """
-    # Check if there is a queen in the same column or diagonals
-    for i in range(row):
-        if board[i] == col or \
-           board[i] - i == col - row or \
-           board[i] + i == col + row:
-            return False
-    return True
+    if i == n:
+        t_arr.append(col[:])
+        return t_arr
 
+    for j in range(n):
+        if all(j != col[k] and abs(j - col[k]) != i - k for k in range(i)):
+            col[i] = j
+            n_queens(t_arr, col, i + 1, n)
 
-def solve_n_queens_util(board, row, N, solutions):
-    """
-    Recursively solve the N-Queens problem.
-
-    Args:
-        board (list): The current state of the board.
-        row (int): The current row being processed.
-        N (int): The size of the board (N x N).
-        solutions (list): The list to store the solutions.
-    """
-    if row == N:
-        # All queens have been placed, add the current board state to the solutions list
-        solutions.append(board[:])
-        return
-
-    for col in range(N):
-        if is_safe(board, row, col, N):
-            # Place a queen in the current row and column
-            board[row] = col
-            # Recursively solve the problem for the next row
-            solve_n_queens_util(board, row + 1, N, solutions)
-
-
-def nQueens():
-    """
-    Solve the N-Queens problem and print the solutions.
-    """
-    if len(sys.argv) != 2:
-        print('Usage: nqueens N\n', file=sys.stderr)
-        sys.exit(1)
-
-    try:
-        N = int(sys.argv[1])
-    except ValueError:
-        print('N must be a number\n', file=sys.stderr)
-        sys.exit(1)
-
-    if N < 4:
-        print('N must be at least 4\n', file=sys.stderr)
-        sys.exit(1)
-
-    solutions = []
-    solve_n_queens_util([-1] * N, 0, N, solutions)
-
-    for sol in solutions:
-        print([[i, col] for i, col in enumerate(sol)])
-
-    sys.exit(0)
+    return t_arr
 
 
 if __name__ == "__main__":
-    nQueens()
+    if len(sys.argv) != 2:
+        print("Usage: nqueens N")
+        exit(1)
+
+    try:
+        n = int(sys.argv[1])
+    except ValueError:
+        print("N must be a number")
+        exit(1)
+
+    if n < 4:
+        print("N must be at least 4")
+        exit(1)
+
+    solutions = n_queens([], [0] * n, 0, n)
+    for solution in solutions:
+        print([[i, solution[i]] for i in range(n)])
