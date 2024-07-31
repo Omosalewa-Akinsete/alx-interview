@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 """Solves the N-Queens problem"""
-
 import sys
-
 
 if __name__ == '__main__':
     # Check if the correct number of arguments was provided
