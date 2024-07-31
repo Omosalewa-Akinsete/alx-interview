@@ -9,3 +9,5 @@ This is a repository for interviews
 4. 0x03. Log Parsing
 
 5. 0x04. UTF-8 Validation
+
+0x05. N Queens
