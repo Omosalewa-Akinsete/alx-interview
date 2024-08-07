@@ -10,4 +10,6 @@ This is a repository for interviews
 
 5. 0x04. UTF-8 Validation
 
-0x05. N Queens
+6. 0x05. N Queens
+
+7. 0x06. Star Wars API
