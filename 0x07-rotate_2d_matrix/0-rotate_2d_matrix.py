@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-This module provides a function to rotate an n x n 2D matrix 90 degrees clockwise.
-"""
+"""Rotate it 90 degrees clockwise"""
 
 
 def rotate_2d_matrix(matrix):
