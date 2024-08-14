@@ -13,3 +13,5 @@ This is a repository for interviews
 6. 0x05. N Queens
 
 7. 0x06. Star Wars API
+
+8. 0x07. Rotate 2D Matrix
