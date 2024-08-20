@@ -15,3 +15,5 @@ This is a repository for interviews
 7. 0x06. Star Wars API
 
 8. 0x07. Rotate 2D Matrix
+
+9. 0x08. Making Change
