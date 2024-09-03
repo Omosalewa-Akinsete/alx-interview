@@ -19,3 +19,5 @@ This is a repository for interviews
 9. 0x08. Making Change
 
 10. 0x09. Island Perimeter
+
+11. 0x0A. Prime Game
