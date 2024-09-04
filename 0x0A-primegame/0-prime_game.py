@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Maria and Ben playing a game"""
 
+
 def isWinner(x, nums):
     """
     Determines the winner of multiple rounds of a game where Maria and Ben
@@ -19,7 +20,8 @@ def isWinner(x, nums):
 
     def sieve_of_eratosthenes(max_num):
         """
-        Implements the Sieve of Eratosthenes algorithm to find all prime numbers
+        Implements the Sieve of Eratosthenes algorithm
+        to find all prime numbers
         up to a given number.
 
         Args:
@@ -57,7 +59,8 @@ def isWinner(x, nums):
         # Players take turns removing primes and their multiples
         while prime_set:
             prime = next(iter(prime_set))  # Maria picks the smallest prime
-            multiples = set(range(prime, n + 1, prime))  # Remove prime and its multiples
+            multiples = set(range(prime, n + 1, prime))
+            # Remove prime and its multiples
             prime_set -= multiples  # Update the set of remaining primes
             is_maria_turn = not is_maria_turn  # Switch turns
 
