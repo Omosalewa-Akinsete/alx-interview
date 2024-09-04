@@ -2,87 +2,87 @@
 """Maria and Ben playing a game"""
 
 
-def isWinner(x, nums):
+def is_prime(n):
     """
-    Determines the winner of multiple rounds of a game where Maria and Ben
-    take turns picking prime numbers and removing them and their multiples
-    from a set of consecutive integers.
+    Checks if number is a prime
 
     Args:
-        x (int): The number of rounds to be played.
-        nums (list of int): A list where each element is 'n', representing
-                            the range of numbers from 1 to n for each round.
+        n (int): Number
 
-    Returns:
-        str: The name of the player with the most wins ("Maria" or "Ben").
-             Returns None if the winner cannot be determined.
+    Return:
+        True if n is a prime, else False
+    """
+    if n < 2:
+        return False
+
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+
+def prime_numbers(start, end):
+    """
+    Returns a list of prime numbers from start to end (inclusive)
+
+    Args:
+        start (int): Start number
+        end (int): Last number to include
+    """
+    primes = [n for n in range(start, end + 1) if is_prime(n)]
+    return primes
+
+
+def isWinner(x, nums):
+    """
+    Determines the winner of a prime numbers game
+
+    Args:
+        x (int): The number of rounds
+        nums (list): An array
+
+    Return:
+        name of player who won the most rounds
+        None, if the winner cannot be determined
     """
 
-    def sieve_of_eratosthenes(max_num):
-        """
-        Implements the Sieve of Eratosthenes algorithm
-        to find all prime numbers
-        up to a given number.
+    winner = None
 
-        Args:
-            max_num (int): The maximum number to check for primes.
+    if not nums or x < 1:
+        return winner
 
-        Returns:
-            list of int: A list of all prime numbers up to 'max_num'.
-        """
-        sieve = [True] * (max_num + 1)  # Initialize sieve array
-        sieve[0] = sieve[1] = False  # 0 and 1 are not primes
-        p = 2
-        # Mark non-primes as False
-        while p * p <= max_num:
-            if sieve[p]:
-                for i in range(p * p, max_num + 1, p):
-                    sieve[i] = False
-            p += 1
-        # Return list of primes
-        return [p for p in range(max_num + 1) if sieve[p]]
+    mariaCount = 0
+    benCount = 0
 
-    def play_game(n):
-        """
-        Simulates a single round of the game.
+    for num in nums:
+        rounds = list(range(1, num + 1))
+        primes = prime_numbers(1, num)
 
-        Args:
-            n (int): The range of numbers from 1 to n.
+        if not primes:
+            benCount += 1
+            continue
 
-        Returns:
-            str: The winner of the game ("Maria" or "Ben").
-        """
-        primes = sieve_of_eratosthenes(n)  # Get all primes up to n
-        is_maria_turn = True  # Maria starts the game
-        prime_set = set(primes)  # Set of primes for fast removal
+        maria_turn = True
 
-        # Players take turns removing primes and their multiples
-        while prime_set:
-            prime = next(iter(prime_set))  # Maria picks the smallest prime
-            multiples = set(range(prime, n + 1, prime))
-            # Remove prime and its multiples
-            prime_set -= multiples  # Update the set of remaining primes
-            is_maria_turn = not is_maria_turn  # Switch turns
+        while (True):
+            if not primes:
+                if maria_turn:
+                    benCount += 1
+                else:
+                    mariaCount += 1
+                break
 
-        # If it's Maria's turn and there are no primes left, Ben wins
-        return "Ben" if is_maria_turn else "Maria"
+            leastPrime = primes.pop(0)
+            rounds.remove(leastPrime)
 
-    # Initialize win counters for both players
-    maria_wins = 0
-    ben_wins = 0
+            rounds = [x for x in rounds if x % leastPrime != 0]
 
-    # Simulate each round of the game
-    for n in nums:
-        winner = play_game(n)
-        if winner == "Maria":
-            maria_wins += 1
-        else:
-            ben_wins += 1
+            maria_turn = not maria_turn
 
-    # Determine overall winner after all rounds
-    if maria_wins > ben_wins:
-        return "Maria"
-    elif ben_wins > maria_wins:
-        return "Ben"
-    else:
-        return None
+    if mariaCount > benCount:
+        winner = "Maria"
+
+    if benCount > mariaCount:
+        winner = "Ben"
+
+    return winner
